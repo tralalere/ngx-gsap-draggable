@@ -1,7 +1,12 @@
 /**
  * Created by reunion on 06/06/2017.
  */
-import {Directive, ElementRef, Input, Output, EventEmitter, OnChanges, SimpleChanges} from "@angular/core";
+import {
+    Directive, ElementRef, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit,
+    OnDestroy
+} from "@angular/core";
+import {DropzoneDirective} from "./dropzone.directive";
+import {DraggableService} from "./draggable.service";
 import {TweenLite} from "gsap";
 
 declare var require:any;
@@ -10,7 +15,7 @@ const Draggable = require("gsap/Draggable");
 @Directive({
     selector: "[draggable]"
 })
-export class DraggableDirective implements OnChanges {
+export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
 
     draggableInstance:any;
 
@@ -23,9 +28,13 @@ export class DraggableDirective implements OnChanges {
     @Output() onDragStart:EventEmitter<any> = new EventEmitter();
     @Output() onDrag:EventEmitter<any> = new EventEmitter();
     @Output() onDragEnd:EventEmitter<any> = new EventEmitter();
+
+    //@Output() onHit:EventEmitter<DropzoneDirective> = new EventEmitter();
+    //@Output() onGroupHit:EventEmitter<DropzoneDirective> = new EventEmitter();
     
     constructor(
-        private element:ElementRef
+        public element:ElementRef,
+        private draggableService:DraggableService
     ) {
         let self:DraggableDirective = this;
         let ghostNode:any;
@@ -39,7 +48,7 @@ export class DraggableDirective implements OnChanges {
                     });
 
                     if (self.onDragStart) {
-                        self.onDragStart.emit(null);
+                        self.onDragStart.emit(this);
                     }
 
                     if (self.ghost) {
@@ -59,7 +68,7 @@ export class DraggableDirective implements OnChanges {
                 onDrag: function () {
 
                     if (self.onDrag) {
-                        self.onDrag.emit(null);
+                        self.onDrag.emit(this);
                     }
 
                     if (self.ghost) {
@@ -75,7 +84,7 @@ export class DraggableDirective implements OnChanges {
                 onDragEnd: function () {
 
                     if (self.onDragEnd) {
-                        self.onDragEnd.emit(null);
+                        self.onDragEnd.emit(this);
                     }
 
                     if (self.ghost) {
@@ -91,8 +100,17 @@ export class DraggableDirective implements OnChanges {
 
         this.draggableInstance = Draggable.create(this.element.nativeElement, configuration)[0];
     }
+    
+    ngOnInit() {
+        this.draggableService.registerDraggable(this);
+    }
+    
+    ngOnDestroy() {
+        this.draggableService.unregisterDraggable(this);
+    }
 
     ngOnChanges(changes:SimpleChanges) {
+        
         if (changes["draggable"]) {
             if (this.draggable) {
                 this.draggableInstance.enable();
@@ -100,5 +118,6 @@ export class DraggableDirective implements OnChanges {
                 this.draggableInstance.disable();
             }
         }
+        
     }
 }
