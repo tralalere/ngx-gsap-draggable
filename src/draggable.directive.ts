@@ -5,7 +5,6 @@ import {
     Directive, ElementRef, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit,
     OnDestroy
 } from "@angular/core";
-import {DropzoneDirective} from "./dropzone.directive";
 import {DraggableService} from "./draggable.service";
 import {TweenLite} from "gsap";
 
