@@ -54,6 +54,7 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
                         ghostNode = self.element.nativeElement.cloneNode(true);
                         ghostNode.classList.add("ghost");
                         document.body.appendChild(ghostNode);
+                        
 
                         var ideaBounds:any = self.element.nativeElement.getBoundingClientRect();
                         TweenLite.set(ghostNode, {
