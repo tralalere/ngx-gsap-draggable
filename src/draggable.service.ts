@@ -5,6 +5,7 @@ import {Injectable} from "@angular/core";
 import {DroppableDirective} from "./droppable.directive";
 import {DropzoneDirective} from "./dropzone.directive";
 import {DraggableDirective} from "./draggable.directive";
+import {CollidableDirective} from "./collidable.directive";
 
 @Injectable()
 export class DraggableService {
@@ -12,6 +13,7 @@ export class DraggableService {
     registeredDroppables:DroppableDirective[] = [];
     registeredDropzones:DropzoneDirective[] = [];
     registeredDraggables:DraggableDirective[] = [];
+    registeredCollidables:CollidableDirective[] = [];
 
 
     registerDraggable(draggable:DraggableDirective) {
@@ -47,6 +49,18 @@ export class DraggableService {
 
         if (index !== -1) {
             this.registeredDropzones.splice(index, 1);
+        }
+    }
+
+    registerCollidable(collidable:CollidableDirective) {
+        this.registeredCollidables.push(collidable);
+    }
+
+    unregisterCollidable(collidable:CollidableDirective) {
+        let index:number = this.registeredCollidables.indexOf(collidable);
+
+        if (index !== -1) {
+            this.registeredCollidables.splice(index, 1);
         }
     }
 }
