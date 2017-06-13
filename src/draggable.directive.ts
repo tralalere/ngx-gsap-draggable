@@ -42,9 +42,9 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
                 type: this.type,
                 onDragStart: function () {
 
-                    TweenLite.set(this.target, {
+                    /*TweenLite.set(this.target, {
                         clearProps: "all"
-                    });
+                    });*/
 
                     if (self.onDragStart) {
                         self.onDragStart.emit(this);
