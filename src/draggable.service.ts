@@ -5,7 +5,8 @@ import {Injectable} from "@angular/core";
 import {DroppableDirective} from "./droppable.directive";
 import {DropzoneDirective} from "./dropzone.directive";
 import {DraggableDirective} from "./draggable.directive";
-import {CollidableDirective} from "./collidable.directive";
+import {Observable} from "rxjs/Rx";
+import {CollidableCouple} from "./collidable-couple.class";
 
 @Injectable()
 export class DraggableService {
@@ -13,7 +14,11 @@ export class DraggableService {
     registeredDroppables:DroppableDirective[] = [];
     registeredDropzones:DropzoneDirective[] = [];
     registeredDraggables:DraggableDirective[] = [];
-    registeredCollidables:CollidableDirective[] = [];
+    registeredCollidables:DraggableDirective[] = [];
+    registeredCollidablesByGroup:{[key:string]:DraggableDirective[]} = {};
+    collidableCouples:CollidableCouple[] = [];
+    activeSourceGroups:string[] = [];
+    activeTargetGroups:string[] = [];
 
 
     registerDraggable(draggable:DraggableDirective) {
@@ -52,15 +57,51 @@ export class DraggableService {
         }
     }
 
-    registerCollidable(collidable:CollidableDirective) {
+    registerCollidable(collidable:DraggableDirective, groups:string|string[] = null) {
+
         this.registeredCollidables.push(collidable);
+
+        if (groups) {
+            if (typeof groups === "string") {
+                this.registerCollidableInGroup(collidable, groups);
+            } else if (groups instanceof Array) {
+                for (let groupName of groups) {
+                    this.registerCollidableInGroup(collidable, groupName);
+                }
+            }
+        }
     }
 
-    unregisterCollidable(collidable:CollidableDirective) {
+    registerCollidableInGroup(collidable:DraggableDirective, group:string) {
+
+        if (!this.registeredCollidablesByGroup[group]) {
+            this.registeredCollidablesByGroup[group] = [];
+        }
+
+        this.registeredCollidablesByGroup[group].push(collidable);
+    }
+
+    unregisterCollidableInGroup(collidable:DraggableDirective, group:string) {
+
+    }
+
+    unregisterCollidable(collidable:DraggableDirective) {
         let index:number = this.registeredCollidables.indexOf(collidable);
 
         if (index !== -1) {
             this.registeredCollidables.splice(index, 1);
         }
+    }
+
+    /*setGroupAsActive(group:string) {
+        if (this.activeGroups.indexOf(group) === -1) {
+            this.activeGroups.push(group);
+        }
+    }*/
+
+    getCollisions(sourceGroup:string, targetGroup:string):Observable<DraggableDirective> {
+        var couple:CollidableCouple = new CollidableCouple(sourceGroup, targetGroup);
+        this.collidableCouples.push(couple);
+        return couple.subject;
     }
 }

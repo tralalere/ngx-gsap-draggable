@@ -23,6 +23,8 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
     @Input() bounds:any;
     @Input() ghost:boolean = false;
     @Input() enabled:boolean = true;
+    @Input() collidable:boolean = false;
+    @Input() groups:string|string[];
 
     @Output() onDragStart:EventEmitter<any> = new EventEmitter();
     @Output() onDrag:EventEmitter<any> = new EventEmitter();
@@ -41,10 +43,6 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
         let configuration:Object = {
                 type: this.type,
                 onDragStart: function () {
-
-                    /*TweenLite.set(this.target, {
-                        clearProps: "all"
-                    });*/
 
                     if (self.onDragStart) {
                         self.onDragStart.emit(this);
@@ -80,6 +78,12 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
                             }
                         });
                     }
+                    
+                    // collidable testing
+                    for (let collidable of self.draggableService.registeredCollidables) {
+                        
+                    }
+                    
                 },
                 onDragEnd: function () {
 
@@ -101,12 +105,28 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
         this.draggableInstance = Draggable.create(this.element.nativeElement, configuration)[0];
     }
     
+    isInGroup(group:string):boolean {
+        if (typeof this.groups === "string") {
+            return group === this.groups;
+        } else if (this.groups instanceof Array) {
+            return (this.groups as string[]).indexOf(group) !== -1;
+        }
+    }
+    
     ngOnInit() {
         this.draggableService.registerDraggable(this);
+        
+        if (this.collidable) {
+            this.draggableService.registerCollidable(this, this.groups);
+        }
     }
     
     ngOnDestroy() {
         this.draggableService.unregisterDraggable(this);
+        
+        if (this.collidable) {
+            this.draggableService.unregisterCollidable(this);
+        }
     }
 
     ngOnChanges(changes:SimpleChanges) {
