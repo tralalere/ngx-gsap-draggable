@@ -7,6 +7,7 @@ import {DropzoneDirective} from "./dropzone.directive";
 import {DraggableDirective} from "./draggable.directive";
 import {Observable} from "rxjs/Rx";
 import {CollidableCouple} from "./collidable-couple.class";
+import {HittableDirective} from "./hittable.directive";
 
 @Injectable()
 export class DraggableService {
@@ -14,8 +15,8 @@ export class DraggableService {
     registeredDroppables:DroppableDirective[] = [];
     registeredDropzones:DropzoneDirective[] = [];
     registeredDraggables:DraggableDirective[] = [];
-    registeredCollidables:DraggableDirective[] = [];
-    registeredCollidablesByGroup:{[key:string]:DraggableDirective[]} = {};
+    registeredCollidables:HittableDirective[] = [];
+    registeredCollidablesByGroup:{[key:string]:HittableDirective[]} = {};
     collidableCouples:CollidableCouple[] = [];
     activeSourceGroups:string[] = [];
     activeTargetGroups:string[] = [];
@@ -57,7 +58,7 @@ export class DraggableService {
         }
     }
 
-    registerCollidable(collidable:DraggableDirective, groups:string|string[] = null) {
+    registerCollidable(collidable:HittableDirective, groups:string|string[] = null) {
 
         this.registeredCollidables.push(collidable);
 
@@ -72,7 +73,7 @@ export class DraggableService {
         }
     }
 
-    registerCollidableInGroup(collidable:DraggableDirective, group:string) {
+    registerCollidableInGroup(collidable:HittableDirective, group:string) {
 
         if (!this.registeredCollidablesByGroup[group]) {
             this.registeredCollidablesByGroup[group] = [];
@@ -81,11 +82,11 @@ export class DraggableService {
         this.registeredCollidablesByGroup[group].push(collidable);
     }
 
-    unregisterCollidableInGroup(collidable:DraggableDirective, group:string) {
+    unregisterCollidableInGroup(collidable:HittableDirective, group:string) {
 
     }
 
-    unregisterCollidable(collidable:DraggableDirective) {
+    unregisterCollidable(collidable:HittableDirective) {
         let index:number = this.registeredCollidables.indexOf(collidable);
 
         if (index !== -1) {
@@ -99,7 +100,7 @@ export class DraggableService {
         }
     }*/
 
-    getCollisions(sourceGroup:string, targetGroup:string):Observable<DraggableDirective> {
+    getCollisions(sourceGroup:string, targetGroup:string):Observable<HittableDirective> {
         var couple:CollidableCouple = new CollidableCouple(sourceGroup, targetGroup);
         this.collidableCouples.push(couple);
         return couple.subject;

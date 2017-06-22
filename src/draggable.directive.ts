@@ -23,7 +23,6 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
     @Input() bounds:any;
     @Input() ghost:boolean = false;
     @Input() enabled:boolean = true;
-    @Input() collidable:boolean = false;
     @Input() groups:string|string[];
 
     @Output() onDragStart:EventEmitter<any> = new EventEmitter();
@@ -115,18 +114,10 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
     
     ngOnInit() {
         this.draggableService.registerDraggable(this);
-        
-        if (this.collidable) {
-            this.draggableService.registerCollidable(this, this.groups);
-        }
     }
     
     ngOnDestroy() {
         this.draggableService.unregisterDraggable(this);
-        
-        if (this.collidable) {
-            this.draggableService.unregisterCollidable(this);
-        }
     }
 
     ngOnChanges(changes:SimpleChanges) {
