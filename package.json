@@ -1,6 +1,6 @@
 {
   "name": "ngx-gsap-draggable",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "bundles/ngx-gsap-draggable.umd.js",
   "scripts": {
@@ -15,16 +15,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cvimbert/ngx-gsap-draggable.git"
+    "url": "git+https://github.com/tralalere/ngx-gsap-draggable.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cvimbert/ngx-gsap-draggable/issues"
+    "url": "https://github.com/tralalere/ngx-gsap-draggable/issues"
   },
   "module": "index.js",
   "typings": "index.d.ts",
-  "homepage": "https://github.com/cvimbert/ngx-gsap-draggable#readme",
+  "homepage": "https://github.com/tralalere/ngx-gsap-draggable#readme",
   "peerDependencies": {
     "@angular/core": ">=2.0.0"
   },
