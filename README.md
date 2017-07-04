@@ -107,9 +107,9 @@ Very useful for dragging an element out of a ```overflow: hidden``` or ```overfl
 
 ## Incoming developments
 
-Incoming version will implement many of the original Greensock Draggable Options.
+Incoming version will implement many of the original Greensock draggable options.
 
-It will also implement a observable and event based collision system.
+It will also implements an observable and event based collision system.
 
 ## Change log
 
