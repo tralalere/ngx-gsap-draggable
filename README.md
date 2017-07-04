@@ -113,6 +113,6 @@ It will also implement a observable and event based collision system.
 
 ## Change log
 
-## [0.0.6] - 2017-07-04
+[0.0.6] - 2017-07-04
 ### Added
 - Current and first documented version
