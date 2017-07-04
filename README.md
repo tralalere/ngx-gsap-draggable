@@ -4,7 +4,7 @@ ngx-gsap-draggable is a Greensock Draggable wrapper for Angular 2+ versions.
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Events](#eventsandoptions)
+* [Events and options](#eventsandoptions)
 * [Incoming developments](#incomingdevelopments)
 * [Change log](#changelog)
 
@@ -98,6 +98,12 @@ onDragEnd is fired when the user release the html element
 If set to true, a ghost element cloned from the original element is created on drag start, and move on each frame according to the original object position. The ghost element is always appended to the document body, and destroyed when the dragging ends.
 
 Very useful for dragging an element out of a ```overflow: hidden``` or ```overflow: auto``` element.
+
+```html
+    <div [draggable]="true" [ghost]="true">
+        Your draggable content
+    </div>
+```
 
 ## Incoming developments
 
