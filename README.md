@@ -4,9 +4,9 @@ ngx-gsap-draggable is a Greensock Draggable wrapper for Angular 2+ versions.
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Events and options](#eventsandoptions)
-* [Incoming developments](#incomingdevelopments)
-* [Change log](#changelog)
+* [Events and options](#events-and-options)
+* [Incoming developments](#incoming-developments)
+* [Change log](#change-log)
 
 ## Installation
 
