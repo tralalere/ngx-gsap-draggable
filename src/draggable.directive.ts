@@ -36,72 +36,7 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
         public element:ElementRef,
         private draggableService:DraggableService
     ) {
-        let self:DraggableDirective = this;
-        let ghostNode:any;
 
-        let configuration:Object = {
-                type: this.type,
-                onDragStart: function () {
-
-                    if (self.onDragStart) {
-                        self.onDragStart.emit(this);
-                    }
-
-                    if (self.ghost) {
-                        ghostNode = self.element.nativeElement.cloneNode(true);
-                        ghostNode.classList.add("ghost");
-                        document.body.appendChild(ghostNode);
-                        
-
-                        var ideaBounds:any = self.element.nativeElement.getBoundingClientRect();
-                        TweenLite.set(ghostNode, {
-                            css: {
-                                x: ideaBounds.left,
-                                y: ideaBounds.top
-                            }
-                        });
-                    }
-                },
-                onDrag: function () {
-
-                    if (self.onDrag) {
-                        self.onDrag.emit(this);
-                    }
-
-                    if (self.ghost) {
-                        var ideaBounds:any = self.element.nativeElement.getBoundingClientRect();
-                        TweenLite.set(ghostNode, {
-                            css: {
-                                x: ideaBounds.left,
-                                y: ideaBounds.top
-                            }
-                        });
-                    }
-                    
-                    // collidable testing
-                    for (let collidable of self.draggableService.registeredCollidables) {
-                        
-                    }
-                    
-                },
-                onDragEnd: function () {
-
-                    if (self.onDragEnd) {
-                        self.onDragEnd.emit(this);
-                    }
-
-                    if (self.ghost) {
-                        document.body.removeChild(ghostNode);
-                        ghostNode = null;
-                    }
-                }
-            };
-
-        if (this.bounds) {
-            configuration["bounds"] = this.bounds;
-        }
-
-        this.draggableInstance = Draggable.create(this.element.nativeElement, configuration)[0];
     }
     
     isInGroup(group:string):boolean {
@@ -113,6 +48,73 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
     }
     
     ngOnInit() {
+        let self:DraggableDirective = this;
+        let ghostNode:any;
+
+        let configuration:Object = {
+            type: this.type,
+            onDragStart: function () {
+
+                if (self.onDragStart) {
+                    self.onDragStart.emit(this);
+                }
+
+                if (self.ghost) {
+                    ghostNode = self.element.nativeElement.cloneNode(true);
+                    ghostNode.classList.add("ghost");
+                    document.body.appendChild(ghostNode);
+
+
+                    var ideaBounds:any = self.element.nativeElement.getBoundingClientRect();
+                    TweenLite.set(ghostNode, {
+                        css: {
+                            x: ideaBounds.left,
+                            y: ideaBounds.top
+                        }
+                    });
+                }
+            },
+            onDrag: function () {
+
+                if (self.onDrag) {
+                    self.onDrag.emit(this);
+                }
+
+                if (self.ghost) {
+                    var ideaBounds:any = self.element.nativeElement.getBoundingClientRect();
+                    TweenLite.set(ghostNode, {
+                        css: {
+                            x: ideaBounds.left,
+                            y: ideaBounds.top
+                        }
+                    });
+                }
+
+                // collidable testing
+                for (let collidable of self.draggableService.registeredCollidables) {
+
+                }
+
+            },
+            onDragEnd: function () {
+
+                if (self.onDragEnd) {
+                    self.onDragEnd.emit(this);
+                }
+
+                if (self.ghost) {
+                    document.body.removeChild(ghostNode);
+                    ghostNode = null;
+                }
+            }
+        };
+
+        if (this.bounds) {
+            configuration["bounds"] = this.bounds;
+        }
+
+        this.draggableInstance = Draggable.create(this.element.nativeElement, configuration)[0];
+
         this.draggableService.registerDraggable(this);
     }
     
