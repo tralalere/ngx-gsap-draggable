@@ -124,7 +124,7 @@ export class DraggableDirective implements OnChanges, OnInit, OnDestroy {
 
     ngOnChanges(changes:SimpleChanges) {
         
-        if (changes["draggable"]) {
+        if (changes["draggable"] && this.draggableInstance) {
             if (this.draggable) {
                 this.draggableInstance.enable();
             } else {
